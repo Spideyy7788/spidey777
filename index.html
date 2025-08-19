@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Gopinath S • Portfolio</title>
+<style>
+  :root{
+    --accent:#00ffcc;
+    --accent-2:#74f4ff;
+    --txt:#eaf7ff;
+    --muted:#bcd2e1;
+    --card:rgba(255,255,255,.08);
+    --card-2:rgba(255,255,255,.12);
+    --shadow:0 15px 40px rgba(0,0,0,.35);
+    --radius:18px;
+    --max:1100px;
+  }
+
+  /* ===== Global / Reset ===== */
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; color:var(--txt); font:16px/1.6 "Segoe UI",system-ui,-apple-system,Arial;
+    overflow-x:hidden;
+    /* Unique moving background: layered gradients + floating blobs */
+    background:
+      radial-gradient(55vw 55vw at 10% 10%, rgba(0,255,204,.10), transparent 60%),
+      radial-gradient(45vw 45vw at 90% 20%, rgba(116,244,255,.10), transparent 60%),
+      radial-gradient(60vw 60vw at 30% 90%, rgba(255,0,155,.10), transparent 60%),
+      linear-gradient(120deg,#0f2027,#203a43,#2c5364);
+    background-size:cover;
+    isolation:isolate;
+  }
+  /* softly drifting blobs */
+  .bg-blob{position:fixed; inset:-20vmax auto auto -20vmax; width:40vmax; height:40vmax;
+    background:radial-gradient(circle at 30% 30%, rgba(0,255,204,.22), transparent 60%);
+    filter:blur(30px); z-index:-1; border-radius:50%; animation:blob 22s ease-in-out infinite alternate}
+  .bg-blob.b2{left:auto; right:-25vmax; top:-10vmax; width:45vmax; height:45vmax;
+    background:radial-gradient(circle at 70% 40%, rgba(255,0,160,.20), transparent 60%); animation-duration:28s}
+  .bg-blob.b3{left:20vmax; bottom:-25vmax; top:auto; width:50vmax; height:50vmax;
+    background:radial-gradient(circle at 50% 60%, rgba(80,160,255,.20), transparent 60%); animation-duration:30s}
+  @keyframes blob{from{transform:translate(0,0) scale(1)} to{transform:translate(6vmax,-4vmax) scale(1.15)}}
+
+  /* ===== Layout ===== */
+  .container{max-width:var(--max); margin:auto; padding:0 20px}
+  .card{background:var(--card); border:1px solid rgba(255,255,255,.08); border-radius:var(--radius);
+        box-shadow:var(--shadow); backdrop-filter: blur(6px)}
+  h1,h2{margin:0 0 12px}
+  h2{font-size:2rem; color:var(--accent)}
+  section{margin:70px 0; padding:32px}
+
+  /* ===== Navbar ===== */
+  .navbar{
+    position:sticky; top:0; z-index:50;
+    backdrop-filter: blur(10px);
+    background:linear-gradient( to bottom, rgba(0,0,0,.55), rgba(0,0,0,.35) );
+    border-bottom:1px solid rgba(255,255,255,.12)
+  }
+  .nav-wrap{display:flex; align-items:center; gap:18px; padding:12px 20px}
+  .brand{font-weight:700; letter-spacing:.3px}
+  .brand span{color:var(--accent)}
+  .nav{margin-left:auto; display:flex; gap:14px; flex-wrap:wrap}
+  .nav a{
+    color:var(--muted); text-decoration:none; padding:8px 12px; border-radius:12px;
+    transition:transform .2s, color .2s, background .2s
+  }
+  .nav a:hover{color:var(--txt); transform:translateY(-2px)}
+  .nav a.active{color:#071a1c; background:linear-gradient(135deg, var(--accent), var(--accent-2)); font-weight:700}
+
+  /* ===== Hero ===== */
+  .hero{display:grid; grid-template-columns:1.1fr .9fr; gap:26px; align-items:center}
+  .pfp{
+    width:190px; height:190px; border-radius:50%;
+    background:linear-gradient(180deg, rgba(255,255,255,.25), rgba(255,255,255,.05));
+    padding:6px; box-shadow:var(--shadow); margin:auto
+  }
+  .pfp img{width:100%; height:100%; object-fit:cover; border-radius:50%}
+  .hero .hi{display:inline-block; font-weight:700; letter-spacing:.4px; color:#071a1c;
+    background:linear-gradient(135deg, var(--accent), var(--accent-2)); padding:6px 12px; border-radius:999px}
+  .hero h1{font-size:2.4rem}
+  .cta{display:flex; gap:12px; flex-wrap:wrap; margin-top:12px}
+  .btn{border:none; padding:10px 16px; border-radius:12px; cursor:pointer; font-weight:600}
+  .btn-primary{color:#071a1c; background:linear-gradient(135deg, var(--accent), var(--accent-2))}
+  .btn-ghost{background:var(--card-2); color:var(--txt); border:1px solid rgba(255,255,255,.15)}
+  .btn:hover{transform:translateY(-2px)}
+
+  /* ===== Skills ===== */
+  .skills{display:grid; grid-template-columns:1fr 1fr; gap:22px}
+  .skill{background:var(--card-2); padding:16px; border-radius:14px; border:1px solid rgba(255,255,255,.08)}
+  .skill h3{margin:0 0 6px; font-size:1rem}
+  .bar{height:10px; background:rgba(255,255,255,.15); border-radius:999px; overflow:hidden}
+  .bar > span{display:block; height:100%; width:0;
+              background:linear-gradient(90deg, var(--accent), var(--accent-2)); border-radius:999px;
+              transition:width 1.2s ease}
+
+  /* ===== Certificates ===== */
+  .grid{display:grid; grid-template-columns:repeat( auto-fit, minmax(260px,1fr) ); gap:18px}
+  .cert{position:relative; overflow:hidden; border-radius:16px;}
+  .cert img{width:100%; height:100%; object-fit:cover; display:block; transition:transform .6s ease}
+  .cert:hover img{transform:scale(1.05)}
+  .cert .cap{position:absolute; inset:auto 0 0 0; padding:10px 12px; background:linear-gradient( to top, rgba(0,0,0,.65), transparent 60%);}
+  .cert .cap h4{margin:0; font-size:1rem; color:var(--accent)}
+
+  /* Lightbox (zoom viewer) */
+  .lightbox{position:fixed; inset:0; display:none; place-items:center; background:rgba(0,0,0,.92); z-index:100}
+  .lightbox.open{display:grid}
+  .lightbox img{max-width:min(1200px,92vw); max-height:90vh; border-radius:12px; box-shadow:var(--shadow)}
+  .lightbox .close, .lightbox .arrow{
+    position:absolute; top:18px; color:#fff; font-weight:800; text-decoration:none; font-size:28px; padding:6px 10px;
+    background:rgba(255,255,255,.08); border-radius:10px; border:1px solid rgba(255,255,255,.15)
+  }
+  .lightbox .close{right:18px}
+  .lightbox .arrow{top:50%; transform:translateY(-50%)}
+  .lightbox .prev{left:18px}
+  .lightbox .next{right:18px}
+
+  /* ===== Project (this site) ===== */
+  .project p{margin:0}
+
+  /* ===== Contact ===== */
+  .contact-list{display:grid; gap:10px}
+  .row{display:flex; align-items:center; gap:10px}
+  .row a{color:var(--txt); text-decoration:none}
+  .row a:hover{color:var(--accent)}
+
+  /* Socials */
+  .socials{display:flex; gap:12px; margin-top:10px}
+  .icon-btn{display:grid; place-items:center; width:40px; height:40px; border-radius:12px; background:var(--card-2);
+            border:1px solid rgba(255,255,255,.12)}
+  .icon-btn:hover{transform:translateY(-2px); outline:1px solid rgba(255,255,255,.28)}
+
+  /* ===== Footer / Back to top ===== */
+  footer{padding:28px 20px; text-align:center; color:var(--muted)}
+  .to-top{position:fixed; right:16px; bottom:16px; width:44px; height:44px; border-radius:50%;
+          display:grid; place-items:center; background:linear-gradient(135deg, var(--accent), var(--accent-2));
+          color:#071a1c; font-weight:800; text-decoration:none; box-shadow:var(--shadow); transform:translateY(80px); transition:transform .25s}
+  .to-top.show{transform:translateY(0)}
+
+  /* ===== Scroll reveal ===== */
+  .reveal{opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease}
+  .reveal.visible{opacity:1; transform:none}
+
+  /* ===== Responsive ===== */
+  @media (max-width:900px){
+    .hero{grid-template-columns:1fr}
+    .pfp{width:150px; height:150px}
+    section{padding:24px}
+  }
+</style>
+</head>
+<body>
+
+<!-- floating blobs -->
+<div class="bg-blob"></div>
+<div class="bg-blob b2"></div>
+<div class="bg-blob b3"></div>
+
+<!-- ===== NAVBAR ===== -->
+<div class="navbar">
+  <div class="container nav-wrap">
+    <div class="brand">Gopinath <span>S.</span></div>
+    <nav class="nav">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#project">Project</a>
+      <a href="#education">Education</a>
+      <a href="#certificates">Certificates</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<!-- ===== HERO / ABOUT ===== -->
+<section id="about" class="container card reveal">
+  <div class="hero">
+    <div>
+      <span class="hi">Hello!</span>
+      <h1>I'm <span style="color:var(--accent)">Gopinath S</span></h1>
+      <p>Undergraduate (3rd Year) at <b>Christ Academy Institute for Advanced Studies</b>, Bangalore University. Passionate about <b>Python</b>, <b>Java</b>, and <b>Web Development</b>. This website is my first official project as I kickstart my developer journey.</p>
+
+      <div class="cta">
+        <a class="btn btn-primary" href="C:\Users\gopiv\Downloads\Gopinath_Resume.pdf" download>Download Resume</a>
+        <a class="btn btn-ghost" href="#certificates">View Certificates</a>
+      </div>
+
+      <div class="socials">
+        <a class="icon-btn" href="https://github.com/Spideyy7788" target="_blank" aria-label="GitHub">
+          <!-- GitHub SVG -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.33-1.76-1.33-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.83 1.24 1.83 1.24 1.07 1.83 2.8 1.3 3.48.99.11-.79.42-1.3.76-1.6-2.67-.3-5.48-1.33-5.48-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.67 1.65.25 2.87.13 3.17.77.84 1.23 1.9 1.23 3.22 0 4.61-2.82 5.62-5.5 5.92.43.38.81 1.12.81 2.26v3.35c0 .32.22.7.83.58A12 12 0 0 0 12 .5z"/></svg>
+        </a>
+        <a class="icon-btn" href="https://linkedin.com/in/Spideyy7788" target="_blank" aria-label="LinkedIn">
+          <!-- LinkedIn SVG -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 21.5H3.56V8.8h3.38V21.5zM5.25 7.2a1.95 1.95 0 1 1 0-3.9 1.95 1.95 0 0 1 0 3.9zM21.5 21.5h-3.37v-6.18c0-1.47-.03-3.36-2.05-3.36-2.05 0-2.36 1.6-2.36 3.25v6.29h-3.37V8.8h3.23v1.73h.05c.45-.86 1.56-1.77 3.22-1.77 3.44 0 4.08 2.26 4.08 5.21v7.53z"/></svg>
+        </a>
+        <a class="icon-btn" href="mailto:23bca073@caias.in" aria-label="Email">
+          <!-- Mail SVG -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="pfp"><img src="C:\Users\gopiv\Downloads\Zoro -Ai.jpg" alt="Gopinath's photo" /></div>
+  </div>
+</section>
+
+<!-- ===== SKILLS ===== -->
+<section id="skills" class="container card reveal">
+  <h2>Skills</h2>
+  <div class="skills">
+    <div class="skill"><h3>Python (Problem Solving & APIs)</h3><div class="bar"><span data-skill="85"></span></div></div>
+    <div class="skill"><h3>Java (OOP & Data Structures)</h3><div class="bar"><span data-skill="75"></span></div></div>
+    <div class="skill"><h3>Web: HTML • CSS • JS</h3><div class="bar"><span data-skill="80"></span></div></div>
+    <div class="skill"><h3>Databases: MySQL • MongoDB</h3><div class="bar"><span data-skill="70"></span></div></div>
+    <div class="skill"><h3>Git & GitHub</h3><div class="bar"><span data-skill="72"></span></div></div>
+    <div class="skill"><h3>Neural Networks (certificate)</h3><div class="bar"><span data-skill="60"></span></div></div>
+    <div class="skill"><h3>Computer Networking (certificates)</h3><div class="bar"><span data-skill="65"></span></div></div>
+    <div class="skill"><h3>Security Management (certificate)</h3><div class="bar"><span data-skill="62"></span></div></div>
+    <div class="skill"><h3>Software Dev & Testing (certificate)</h3><div class="bar"><span data-skill="68"></span></div></div>
+  </div>
+</section>
+
+<!-- ===== PROJECT (This website) ===== -->
+<section id="project" class="container card project reveal">
+  <h2>My First Project</h2>
+  <p>This portfolio site itself 🎉 — designed with animated gradient background, glassmorphism, scroll-reveal, and a custom certificate viewer.</p>
+</section>
+
+<!-- ===== EDUCATION ===== -->
+<section id="education" class="container card reveal">
+  <h2>Education</h2>
+  <p><b>Bachelor’s Degree (Undergraduate) — 3rd Year</b><br/>
+     <b>Christ Academy Institute for Advanced Studies</b>, Bangalore University</p>
+</section>
+
+<!-- ===== CERTIFICATES ===== -->
+<section id="certificates" class="container card reveal">
+  <h2>Certificates</h2>
+  <div class="grid" id="certGrid">
+    <figure class="cert"><img src="C:\Users\gopiv\Downloads\Untitled design.pdf~1\1.jpg" alt="Introduction to Neural Network"><figcaption class="cap"><h4>Introduction to Neural Network — Simplilearn SkillUp</h4></figcaption></figure>
+    <figure class="cert"><img src="C:\Users\gopiv\Downloads\Untitled design.pdf~1\2.jpg" alt="Introduction to Computer Networking"><figcaption class="cap"><h4>Introduction to Computer Networking — Simplilearn SkillUp</h4></figcaption></figure>
+    <figure class="cert"><img src="C:\Users\gopiv\Downloads\Untitled design.pdf~1\3.jpg" alt="Security Management Course"><figcaption class="cap"><h4>Security Management — Great Learning Academy</h4></figcaption></figure>
+    <figure class="cert"><img src="C:\Users\gopiv\Downloads\Untitled design.pdf~1\4.jpg" alt="Basics of Computer Networking"><figcaption class="cap"><h4>Basics of Computer Networking — Great Learning Academy</h4></figcaption></figure>
+    <figure class="cert"><img src="C:\Users\gopiv\Downloads\se certificate.pdf.jpg" alt="Software Engineering Fundamentals"><figcaption class="cap"><h4>Software Eng. Fundamentals (Dev & Testing) — Infosys Springboard</h4></figcaption></figure>
+  </div>
+</section>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <a href="#" class="close" id="lbClose" aria-label="Close">✕</a>
+  <a href="#" class="arrow prev" id="lbPrev" aria-label="Previous">‹</a>
+  <img src="" alt="Certificate preview" id="lbImg" />
+  <a href="#" class="arrow next" id="lbNext" aria-label="Next">›</a>
+</div>
+
+<!-- ===== CONTACT ===== -->
+<section id="contact" class="container card reveal">
+  <h2>Contact</h2>
+  <div class="contact-list">
+    <div class="row">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4a2 2 0 0 0-2 2v2l10 6 10-6V6a2 2 0 0 0-2-2Zm0 6-8 4.8L4 10v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8Z"/></svg>
+      <a href="mailto:23bca073@caias.in">23bca073@caias.in</a>
+    </div>
+    <div class="row">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.9 15.9 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1.05-.24c1.15.38 2.4.58 3.55.58a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.85 21 3 13.15 3 3a1 1 0 0 1 1-1h3.48a1 1 0 0 1 1 1c0 1.2.2 2.4.58 3.55a1 1 0 0 1-.24 1.05L6.6 10.8Z"/></svg>
+      <a href="tel:+919019357119">+91 90193 57119</a>
+    </div>
+    <div class="row">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M10.9 2.1a1 1 0 0 1 2.2 0v6.4a1 1 0 1 1-2.2 0V2.1ZM7.1 4.6a1 1 0 0 1 1.4 1.4L5.5 9a1 1 0 1 1-1.4-1.4L7.1 4.6Zm9.8 0 3 3a1 1 0 1 1-1.4 1.4l-3-3a1 1 0 1 1 1.4-1.4Z"/></svg>
+      <span>Bengaluru, India</span>
+    </div>
+  </div>
+</section>
+
+<footer class="container">© <span id="yr"></span> Gopinath S — All Rights Reserved</footer>
+<a href="#about" class="to-top" id="toTop" aria-label="Back to top">↑</a>
+
+<script>
+  /* ===== Year & Back-to-top ===== */
+  document.getElementById('yr').textContent = new Date().getFullYear();
+  const toTop = document.getElementById('toTop');
+  window.addEventListener('scroll', () => {
+    toTop.classList.toggle('show', window.scrollY > 600);
+  });
+
+  /* ===== Scroll Reveal ===== */
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('visible');
+        // animate skill bars when skills block enters
+        if(e.target.id === 'skills'){
+          document.querySelectorAll('.bar > span').forEach(el=>{
+            el.style.width = el.dataset.skill + '%';
+          });
+        }
+      }
+    })
+  }, {threshold:.15});
+  document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+  /* ===== Scrollspy (active nav link) ===== */
+  const sections = [...document.querySelectorAll('section[id]')];
+  const navLinks  = [...document.querySelectorAll('.nav a')];
+  const spy = ()=> {
+    const y = window.scrollY + 90; // offset for sticky bar
+    let current = sections[0].id;
+    sections.forEach(s => { if (y >= s.offsetTop) current = s.id; });
+    navLinks.forEach(a=> a.classList.toggle('active', a.getAttribute('href') === `#${current}`));
+  };
+  window.addEventListener('scroll', spy); spy();
+
+  /* ===== Certificates Lightbox (zoom with prev/next + ESC) ===== */
+  const certImgs = [...document.querySelectorAll('#certGrid img')];
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lbImg');
+  const btnPrev = document.getElementById('lbPrev');
+  const btnNext = document.getElementById('lbNext');
+  const btnClose = document.getElementById('lbClose');
+  let idx = 0;
+
+  function openLB(i){
+    idx = i; lbImg.src = certImgs[idx].src; lb.classList.add('open');
+    document.body.style.overflow='hidden';
+  }
+  function closeLB(){
+    lb.classList.remove('open'); document.body.style.overflow='';
+  }
+  function step(d){
+    idx = (idx + d + certImgs.length) % certImgs.length;
+    lbImg.src = certImgs[idx].src;
+  }
+  certImgs.forEach((img,i)=> img.addEventListener('click', ()=>openLB(i)));
+  btnPrev.addEventListener('click', e=>{e.preventDefault(); step(-1)});
+  btnNext.addEventListener('click', e=>{e.preventDefault(); step(1)});
+  btnClose.addEventListener('click', e=>{e.preventDefault(); closeLB()});
+  lb.addEventListener('click', e=>{ if(e.target===lb) closeLB() });
+  window.addEventListener('keydown', e=>{
+    if(!lb.classList.contains('open')) return;
+    if(e.key==='Escape') closeLB();
+    if(e.key==='ArrowRight') step(1);
+    if(e.key==='ArrowLeft') step(-1);
+  });
+</script>
+</body>
+</html>
